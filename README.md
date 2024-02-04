@@ -43,10 +43,12 @@ cd /usr/lib/wsl/lib && \
   sudo ldconfig
 
 6. download opencv and opencv-contribute
+```
 curl -L https://github.com/opencv/opencv/archive/refs/tags/4.9.0.tar.gz | tar xvz && \
   curl -L https://github.com/opencv/opencv_contrib/archive/refs/tags/4.9.0.tar.gz | tar xvz && \
   mkdir -p opencv-4.9.0/build && \
   cd opencv-4.9.0/build
+```
 
 7. add path cuda to path
 ```
@@ -55,6 +57,14 @@ echo 'export PATH="$PATH:/usr/local/cuda-12.3/bin"' >> ~/.bashrc && \
 ```
 
 8.
+```
+cp /mnt/c/Users/admin/Downloads/Video_Codec_SDK_12.1.14.zip . && \
+  sudo cp Lib/linux/stubs/x86_64/* /usr/local/cuda-12.3/lib64/ && \
+  sudo cp Interface/* /usr/local/cuda-12.3/include/
+```
+
+9.
+```
 cmake \
   -D CMAKE_BUILD_TYPE=RELEASE \
   -D CMAKE_INSTALL_PREFIX=/usr/local \
@@ -62,21 +72,28 @@ cmake \
   -D WITH_CUDNN=ON \
   -D WITH_CUBLAS=ON \
   -D WITH_TBB=ON \
+  -D WITH_NVCUVID=ON \
+  -D WITH_NVCUVENC=ON \
   -D OPENCV_DNN_CUDA=ON \
   -D OPENCV_ENABLE_NONFREE=ON \
-  -D CUDA_ARCH_BIN=8.6 \
-  -D OPENCV_EXTRA_MODULES_PATH=$HOME/opencv_contrib-4.9.0/modules \
+  -D CUDA_ARCH_BIN=8.9 \
+  -D OPENCV_EXTRA_MODULES_PATH=$HOME/python/opencv/opencv_contrib-4.9.0/modules \
   -D BUILD_EXAMPLES=OFF \
   -D HAVE_opencv_python3=ON \
   -D BUILD_opencv_python3=ON \
-  -D PYTHON_EXECUTABLE=$(which python3) \
+  -D PYTHON3_EXECUTABLE=$(which python3) \
   -D PYTHON_DEFAULT_EXECUTABLE=$(which python3) \
   -D PYTHON3_PACKAGES_PATH=$(python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") \
-  -D PYTHON3_INCLUDE_DIR=/usr/include/python3.10 \
+  -D PYTHON_LIBRARY=$(python3 -c "from distutils.sysconfig import get_config_var;from os.path import dirname,join ; print(join(dirname(get_config_var('LIBPC')),get_config_var('LDLIBRARY')))") \
+  -D PYTHON_INCLUDE_DIR=/usr/include/python3.10 \
   -D OPENCV_PYTHON3_INSTALL_PATH=/usr/local/lib/python3.10/dist-packages \
   -D PYTHON3_NUMPY_INCLUDE_DIRS=$HOME/.local/lib/python3.10/site-packages/numpy/core/include \
   ..
+```
 
-9.
+10.
 make -j $(nproc)
 sudo make install
+
+# reference
+- https://en.wikipedia.org/wiki/CUDA
