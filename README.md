@@ -4,7 +4,7 @@
 1. install dependencies
 ```
 sudo apt update && \
-  sudo apt install -y build-essential cmake git unzip pkg-config make libavcodec-dev libavformat-dev libswscale-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libgtk-3-dev libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev
+  sudo apt install -y build-essential cmake git unzip pkg-config make libavcodec-dev libavformat-dev libswscale-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libgtk-3-dev libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev python3.10-dev
 ```
 2. install nvidia cuda
 ```
@@ -36,11 +36,13 @@ cp /mnt/c/Users/admin/Downloads/cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.x
 ```
 
 5.
+```
 cd /usr/lib/wsl/lib && \
   sudo rm libcuda.so libcuda.so.1 && \
   sudo ln -s libcuda.so.1.1 libcuda.so.1 && \
   sudo ln -s libcuda.so.1 libcuda.so && \
   sudo ldconfig
+```
 
 6. download opencv and opencv-contribute
 ```
